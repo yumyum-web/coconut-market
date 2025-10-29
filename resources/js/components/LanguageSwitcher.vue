@@ -6,8 +6,8 @@ import {
     DropdownMenuItem,
     DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useI18n } from 'vue-i18n';
 import { Languages } from 'lucide-vue-next';
+import { useI18n } from 'vue-i18n';
 
 const { locale } = useI18n();
 

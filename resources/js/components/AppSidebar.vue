@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import NavFooter from '@/components/NavFooter.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
-import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import {
     Sidebar,
     SidebarContent,
@@ -16,7 +15,15 @@ import {
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
 import { Link, usePage } from '@inertiajs/vue3';
-import { LayoutGrid, Sprout, ShoppingCart, Package, Leaf, Gavel, ShoppingBasket } from 'lucide-vue-next';
+import {
+    Gavel,
+    LayoutGrid,
+    Leaf,
+    Package,
+    ShoppingBasket,
+    ShoppingCart,
+    Sprout,
+} from 'lucide-vue-next';
 import { computed } from 'vue';
 import AppLogo from './AppLogo.vue';
 
@@ -33,7 +40,7 @@ const mainNavItems = computed<NavItem[]>(() => {
             icon: LayoutGrid,
         },
     ];
-    
+
     if (isFarmer.value) {
         items.push(
             {
@@ -55,10 +62,10 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'Byproducts',
                 href: '/byproducts',
                 icon: Package,
-            }
+            },
         );
     }
-    
+
     if (isBuyer.value) {
         items.push(
             {
@@ -70,14 +77,12 @@ const mainNavItems = computed<NavItem[]>(() => {
                 title: 'My Bids',
                 href: '/harvest-bids',
                 icon: Gavel,
-            }
+            },
         );
     }
-    
+
     return items;
 });
-
-const footerNavItems: NavItem[] = [];
 </script>
 
 <template>

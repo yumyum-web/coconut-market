@@ -1,11 +1,21 @@
 <script setup lang="ts">
-import { Head, Link, router } from '@inertiajs/vue3';
-import { useI18n } from 'vue-i18n';
-import { ref } from 'vue';
-import AppLayout from '@/layouts/AppLayout.vue';
-import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, MapPin, Trees, Sprout, Calendar, Edit, Trash2, ChevronLeft, ChevronRight } from 'lucide-vue-next';
+import { Button } from '@/components/ui/button';
+import AppLayout from '@/layouts/AppLayout.vue';
+import { Head, Link, router } from '@inertiajs/vue3';
+import {
+    ArrowLeft,
+    Calendar,
+    ChevronLeft,
+    ChevronRight,
+    Edit,
+    MapPin,
+    Sprout,
+    Trash2,
+    Trees,
+} from 'lucide-vue-next';
+import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
 
@@ -48,13 +58,16 @@ const currentImageIndex = ref(0);
 
 const nextImage = () => {
     if (props.plot.images.length > 0) {
-        currentImageIndex.value = (currentImageIndex.value + 1) % props.plot.images.length;
+        currentImageIndex.value =
+            (currentImageIndex.value + 1) % props.plot.images.length;
     }
 };
 
 const prevImage = () => {
     if (props.plot.images.length > 0) {
-        currentImageIndex.value = (currentImageIndex.value - 1 + props.plot.images.length) % props.plot.images.length;
+        currentImageIndex.value =
+            (currentImageIndex.value - 1 + props.plot.images.length) %
+            props.plot.images.length;
     }
 };
 
@@ -80,47 +93,61 @@ const getStatusColor = (status: string) => {
         <Head :title="plot.name" />
 
         <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="mb-8 flex justify-between items-center">
+            <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                <div class="mb-8 flex items-center justify-between">
                     <div>
-                        <Button variant="ghost" @click="$inertia.visit('/plots')" class="mb-4">
-                            <ArrowLeft class="w-4 h-4 mr-2" />
+                        <Button
+                            variant="ghost"
+                            @click="$inertia.visit('/plots')"
+                            class="mb-4"
+                        >
+                            <ArrowLeft class="mr-2 h-4 w-4" />
                             Back to Plots
                         </Button>
                         <h2 class="text-3xl font-bold text-foreground">
                             {{ plot.name }}
                         </h2>
-                        <div class="flex items-center gap-2 mt-2 text-muted-foreground">
-                            <MapPin class="w-4 h-4" />
+                        <div
+                            class="mt-2 flex items-center gap-2 text-muted-foreground"
+                        >
+                            <MapPin class="h-4 w-4" />
                             <span>{{ plot.location }}</span>
                         </div>
                     </div>
                     <div class="flex gap-2">
                         <Link :href="`/plots/${plot.id}/edit`">
                             <Button variant="outline">
-                                <Edit class="w-4 h-4 mr-2" />
+                                <Edit class="mr-2 h-4 w-4" />
                                 {{ t('common.edit') }}
                             </Button>
                         </Link>
                         <Button variant="destructive" @click="deletePlot">
-                            <Trash2 class="w-4 h-4 mr-2" />
+                            <Trash2 class="mr-2 h-4 w-4" />
                             {{ t('common.delete') }}
                         </Button>
                     </div>
                 </div>
 
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
                     <!-- Main Content -->
-                    <div class="lg:col-span-2 space-y-6">
+                    <div class="space-y-6 lg:col-span-2">
                         <!-- Image Gallery -->
-                        <div class="bg-card rounded-lg border border-border overflow-hidden">
-                            <div v-if="plot.images.length > 0" class="relative aspect-video bg-muted">
+                        <div
+                            class="overflow-hidden rounded-lg border border-border bg-card"
+                        >
+                            <div
+                                v-if="plot.images.length > 0"
+                                class="relative aspect-video bg-muted"
+                            >
                                 <img
                                     :src="`/storage/${plot.images[currentImageIndex].image_path}`"
                                     alt="Plot image"
-                                    class="w-full h-full object-cover"
+                                    class="h-full w-full object-cover"
                                 />
-                                <div v-if="plot.images.length > 1" class="absolute inset-0 flex items-center justify-between p-4">
+                                <div
+                                    v-if="plot.images.length > 1"
+                                    class="absolute inset-0 flex items-center justify-between p-4"
+                                >
                                     <Button
                                         variant="secondary"
                                         size="icon"
@@ -138,24 +165,42 @@ const getStatusColor = (status: string) => {
                                         <ChevronRight class="h-5 w-5" />
                                     </Button>
                                 </div>
-                                <div class="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
+                                <div
+                                    class="absolute right-0 bottom-4 left-0 flex justify-center gap-2"
+                                >
                                     <div
                                         v-for="(image, index) in plot.images"
                                         :key="image.id"
-                                        class="w-2 h-2 rounded-full transition-colors"
-                                        :class="index === currentImageIndex ? 'bg-white' : 'bg-white/50'"
+                                        class="h-2 w-2 rounded-full transition-colors"
+                                        :class="
+                                            index === currentImageIndex
+                                                ? 'bg-white'
+                                                : 'bg-white/50'
+                                        "
                                     />
                                 </div>
                             </div>
-                            <div v-else class="aspect-video bg-muted flex items-center justify-center">
-                                <Sprout class="w-16 h-16 text-muted-foreground" />
+                            <div
+                                v-else
+                                class="flex aspect-video items-center justify-center bg-muted"
+                            >
+                                <Sprout
+                                    class="h-16 w-16 text-muted-foreground"
+                                />
                             </div>
                         </div>
 
                         <!-- Description -->
-                        <div class="bg-card rounded-lg border border-border p-6">
-                            <h3 class="text-lg font-semibold mb-4">{{ t('plot.description') }}</h3>
-                            <p v-if="plot.description" class="text-muted-foreground">
+                        <div
+                            class="rounded-lg border border-border bg-card p-6"
+                        >
+                            <h3 class="mb-4 text-lg font-semibold">
+                                {{ t('plot.description') }}
+                            </h3>
+                            <p
+                                v-if="plot.description"
+                                class="text-muted-foreground"
+                            >
                                 {{ plot.description }}
                             </p>
                             <p v-else class="text-muted-foreground italic">
@@ -164,27 +209,50 @@ const getStatusColor = (status: string) => {
                         </div>
 
                         <!-- Harvest History -->
-                        <div class="bg-card rounded-lg border border-border p-6">
-                            <h3 class="text-lg font-semibold mb-4">{{ t('harvest.harvest_history') }}</h3>
-                            <div v-if="plot.harvests.length > 0" class="space-y-4">
+                        <div
+                            class="rounded-lg border border-border bg-card p-6"
+                        >
+                            <h3 class="mb-4 text-lg font-semibold">
+                                {{ t('harvest.harvest_history') }}
+                            </h3>
+                            <div
+                                v-if="plot.harvests.length > 0"
+                                class="space-y-4"
+                            >
                                 <div
                                     v-for="harvest in plot.harvests"
                                     :key="harvest.id"
-                                    class="flex items-center justify-between p-4 bg-muted rounded-lg"
+                                    class="flex items-center justify-between rounded-lg bg-muted p-4"
                                 >
                                     <div class="flex items-center gap-4">
-                                        <div :class="[getStatusColor(harvest.status), 'w-3 h-3 rounded-full']" />
+                                        <div
+                                            :class="[
+                                                getStatusColor(harvest.status),
+                                                'h-3 w-3 rounded-full',
+                                            ]"
+                                        />
                                         <div>
-                                            <div class="font-medium">{{ harvest.quantity }} coconuts</div>
-                                            <div class="text-sm text-muted-foreground">
-                                                {{ new Date(harvest.harvest_date).toLocaleDateString() }}
+                                            <div class="font-medium">
+                                                {{ harvest.quantity }} coconuts
+                                            </div>
+                                            <div
+                                                class="text-sm text-muted-foreground"
+                                            >
+                                                {{
+                                                    new Date(
+                                                        harvest.harvest_date,
+                                                    ).toLocaleDateString()
+                                                }}
                                             </div>
                                         </div>
                                     </div>
                                     <Badge>{{ harvest.status }}</Badge>
                                 </div>
                             </div>
-                            <p v-else class="text-muted-foreground text-center py-8">
+                            <p
+                                v-else
+                                class="py-8 text-center text-muted-foreground"
+                            >
                                 No harvests recorded yet
                             </p>
                         </div>
@@ -193,77 +261,148 @@ const getStatusColor = (status: string) => {
                     <!-- Sidebar -->
                     <div class="space-y-6">
                         <!-- Stats -->
-                        <div class="bg-card rounded-lg border border-border p-6">
-                            <h3 class="text-lg font-semibold mb-4">{{ t('plot.details') }}</h3>
+                        <div
+                            class="rounded-lg border border-border bg-card p-6"
+                        >
+                            <h3 class="mb-4 text-lg font-semibold">
+                                {{ t('plot.details') }}
+                            </h3>
                             <div class="space-y-4">
                                 <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                                        <Trees class="w-5 h-5 text-primary" />
+                                    <div
+                                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"
+                                    >
+                                        <Trees class="h-5 w-5 text-primary" />
                                     </div>
                                     <div>
-                                        <div class="text-sm text-muted-foreground">{{ t('plot.tree_count') }}</div>
-                                        <div class="font-semibold">{{ plot.tree_count || 'N/A' }}</div>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                                        <Sprout class="w-5 h-5 text-primary" />
-                                    </div>
-                                    <div>
-                                        <div class="text-sm text-muted-foreground">{{ t('plot.size') }}</div>
-                                        <div class="font-semibold">{{ plot.size }} acres</div>
-                                    </div>
-                                </div>
-
-                                <div class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                                        <Calendar class="w-5 h-5 text-primary" />
-                                    </div>
-                                    <div>
-                                        <div class="text-sm text-muted-foreground">{{ t('plot.harvest_frequency') }}</div>
-                                        <div class="font-semibold capitalize">
-                                            {{ plot.harvest_frequency === 'custom' ? plot.custom_frequency : plot.harvest_frequency }}
+                                        <div
+                                            class="text-sm text-muted-foreground"
+                                        >
+                                            {{ t('plot.tree_count') }}
+                                        </div>
+                                        <div class="font-semibold">
+                                            {{ plot.tree_count || 'N/A' }}
                                         </div>
                                     </div>
                                 </div>
 
-                                <div v-if="plot.potential_harvest" class="flex items-center gap-3">
-                                    <div class="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center">
-                                        <Sprout class="w-5 h-5 text-primary" />
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"
+                                    >
+                                        <Sprout class="h-5 w-5 text-primary" />
                                     </div>
                                     <div>
-                                        <div class="text-sm text-muted-foreground">{{ t('plot.potential_harvest') }}</div>
-                                        <div class="font-semibold">{{ plot.potential_harvest }}</div>
+                                        <div
+                                            class="text-sm text-muted-foreground"
+                                        >
+                                            {{ t('plot.size') }}
+                                        </div>
+                                        <div class="font-semibold">
+                                            {{ plot.size }} acres
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="flex items-center gap-3">
+                                    <div
+                                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"
+                                    >
+                                        <Calendar
+                                            class="h-5 w-5 text-primary"
+                                        />
+                                    </div>
+                                    <div>
+                                        <div
+                                            class="text-sm text-muted-foreground"
+                                        >
+                                            {{ t('plot.harvest_frequency') }}
+                                        </div>
+                                        <div class="font-semibold capitalize">
+                                            {{
+                                                plot.harvest_frequency ===
+                                                'custom'
+                                                    ? plot.custom_frequency
+                                                    : plot.harvest_frequency
+                                            }}
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div
+                                    v-if="plot.potential_harvest"
+                                    class="flex items-center gap-3"
+                                >
+                                    <div
+                                        class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10"
+                                    >
+                                        <Sprout class="h-5 w-5 text-primary" />
+                                    </div>
+                                    <div>
+                                        <div
+                                            class="text-sm text-muted-foreground"
+                                        >
+                                            {{ t('plot.potential_harvest') }}
+                                        </div>
+                                        <div class="font-semibold">
+                                            {{ plot.potential_harvest }}
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Categories -->
-                        <div class="bg-card rounded-lg border border-border p-6">
-                            <h3 class="text-lg font-semibold mb-4">{{ t('plot.available_categories') }}</h3>
+                        <div
+                            class="rounded-lg border border-border bg-card p-6"
+                        >
+                            <h3 class="mb-4 text-lg font-semibold">
+                                {{ t('plot.available_categories') }}
+                            </h3>
                             <div class="flex flex-wrap gap-2">
-                                <Badge v-for="category in plot.available_categories" :key="category">
+                                <Badge
+                                    v-for="category in plot.available_categories"
+                                    :key="category"
+                                >
                                     {{ t(`bid.${category}`) }}
                                 </Badge>
                             </div>
                         </div>
 
                         <!-- Features -->
-                        <div class="bg-card rounded-lg border border-border p-6">
-                            <h3 class="text-lg font-semibold mb-4">Features</h3>
+                        <div
+                            class="rounded-lg border border-border bg-card p-6"
+                        >
+                            <h3 class="mb-4 text-lg font-semibold">Features</h3>
                             <div class="space-y-2">
                                 <div class="flex items-center justify-between">
-                                    <span class="text-muted-foreground">{{ t('plot.can_deliver') }}</span>
-                                    <Badge :variant="plot.can_deliver ? 'default' : 'secondary'">
+                                    <span class="text-muted-foreground">{{
+                                        t('plot.can_deliver')
+                                    }}</span>
+                                    <Badge
+                                        :variant="
+                                            plot.can_deliver
+                                                ? 'default'
+                                                : 'secondary'
+                                        "
+                                    >
                                         {{ plot.can_deliver ? 'Yes' : 'No' }}
                                     </Badge>
                                 </div>
                                 <div class="flex items-center justify-between">
-                                    <span class="text-muted-foreground">{{ t('plot.is_harvest_sold') }}</span>
-                                    <Badge :variant="plot.is_harvest_sold ? 'default' : 'secondary'">
-                                        {{ plot.is_harvest_sold ? 'Yes' : 'No' }}
+                                    <span class="text-muted-foreground">{{
+                                        t('plot.is_harvest_sold')
+                                    }}</span>
+                                    <Badge
+                                        :variant="
+                                            plot.is_harvest_sold
+                                                ? 'default'
+                                                : 'secondary'
+                                        "
+                                    >
+                                        {{
+                                            plot.is_harvest_sold ? 'Yes' : 'No'
+                                        }}
                                     </Badge>
                                 </div>
                             </div>
