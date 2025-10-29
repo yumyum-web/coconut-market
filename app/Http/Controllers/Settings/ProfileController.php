@@ -18,9 +18,18 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): Response
     {
+        $user = $request->user();
+
+        if ($user->isFarmer()) {
+            $user->load('farmerProfile');
+        } else {
+            $user->load('buyerProfile');
+        }
+
         return Inertia::render('settings/Profile', [
             'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
             'status' => $request->session()->get('status'),
+            'user' => $user,
         ]);
     }
 
@@ -29,13 +38,27 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $user->fill($request->validated());
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
         }
 
-        $request->user()->save();
+        $user->save();
+
+        // Update farmer/buyer profile if data is provided
+        if ($user->isFarmer() && $request->has('farmer_profile')) {
+            $user->farmerProfile()->updateOrCreate(
+                ['user_id' => $user->id],
+                $request->input('farmer_profile')
+            );
+        } elseif ($user->isBuyer() && $request->has('buyer_profile')) {
+            $user->buyerProfile()->updateOrCreate(
+                ['user_id' => $user->id],
+                $request->input('buyer_profile')
+            );
+        }
 
         return to_route('profile.edit');
     }
