@@ -4,6 +4,8 @@
 
 # Environment
 .env
+.env.backup
+.env.production
 
 # IDE
 .vscode/*
@@ -11,6 +13,10 @@
 !.vscode/extensions.json
 !.vscode/settings.json
 .idea/
+.fleet/
+.nova/
+.phpactor.json
+.zed/
 
 # OS
 .DS_Store
@@ -19,14 +25,34 @@ Thumbs.db
 # Logs
 *.log
 /logs/
+npm-debug.log
+yarn-error.log
 
 # Cache
 /cache/
 /tmp/
+/.phpunit.cache
 
 # Build
 /build/
 /dist/
+/bootstrap/ssr
+/public/build
+/public/hot
+
+# Laravel Specific
+/public/storage
+/storage/*.key
+/storage/pail
+auth.json
+Homestead.json
+Homestead.yaml
+.phpunit.result.cache
+
+# Generated Files
+/resources/js/actions
+/resources/js/routes
+/resources/js/wayfinder
 
 # Dev Containers
 .devcontainer/setup.sh

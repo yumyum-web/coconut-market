@@ -23,9 +23,6 @@
     }
   },
 
-  // Use 'forwardPorts' to make a list of ports inside the container available locally
-  "forwardPorts": [8000],
-
   // Mount GPG keys
   "mounts": [
     "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gnupg,target=/home/vscode/.gnupg,type=bind,consistency=consistent"
