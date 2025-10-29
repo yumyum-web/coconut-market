@@ -1,0 +1,32 @@
+# Dependencies
+/vendor/
+/node_modules/
+
+# Environment
+.env
+
+# IDE
+.vscode/*
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/settings.json
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+/logs/
+
+# Cache
+/cache/
+/tmp/
+
+# Build
+/build/
+/dist/
+
+# Dev Containers
+.devcontainer/setup.sh

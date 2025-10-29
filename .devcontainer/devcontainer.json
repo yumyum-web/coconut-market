@@ -1,0 +1,39 @@
+{
+  "name": "Coconut Market",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+
+  // Configure tool-specific properties
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "bmewburn.vscode-intelephense-client",
+        "xdebug.php-debug",
+        "ms-azuretools.vscode-docker",
+        "esbenp.prettier-vscode",
+        "gxl.git-graph-3",
+        "mikestead.dotenv",
+        "dbcode.dbcode"
+      ],
+      "settings": {
+        "php.validate.executablePath": "/usr/local/bin/php",
+        "intelephense.environment.phpVersion": "8.2.0"
+      }
+    }
+  },
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally
+  "forwardPorts": [8000],
+
+  // Mount GPG keys
+  "mounts": [
+    "source=${localEnv:HOME}${localEnv:USERPROFILE}/.gnupg,target=/home/vscode/.gnupg,type=bind,consistency=consistent"
+  ],
+
+  // Comment to connect as root instead. More info: https://aka.ms/dev-containers-non-root
+  "remoteUser": "vscode",
+
+  // Run commands after container is created
+  "postCreateCommand": "bash .devcontainer/setup.sh"
+}
