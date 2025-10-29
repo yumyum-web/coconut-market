@@ -72,9 +72,9 @@ const markImageForDeletion = (imageId: number) => {
 };
 
 const submit = () => {
-    form.post(`/plots/${props.plot.id}`, {
+    form.put(`/plots/${props.plot.id}`, {
         forceFormData: true,
-        preserveScroll: true,
+        preserveScroll: true
     });
 };
 </script>
