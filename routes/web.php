@@ -22,7 +22,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
     // Plots (Farmer only)
-    Route::middleware('can:isFarmer,App\Models\User')->group(function () {
+    Route::middleware('farmer')->group(function () {
         Route::resource('plots', PlotController::class);
     });
 
@@ -35,18 +35,18 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/harvests/{harvest}/select-winner', [HarvestController::class, 'selectWinner'])->name('harvests.select-winner');
 
     // Harvest Bids (Buyer only)
-    Route::middleware('can:isBuyer,App\Models\User')->group(function () {
+    Route::middleware('buyer')->group(function () {
         Route::post('/harvests/{harvest}/bids', [HarvestBidController::class, 'store'])->name('harvest-bids.store');
     });
     Route::get('/harvest-bids', [HarvestBidController::class, 'index'])->name('harvest-bids.index');
 
     // Products (Farmer only)
-    Route::middleware('can:isFarmer,App\Models\User')->group(function () {
+    Route::middleware('farmer')->group(function () {
         Route::resource('products', ProductController::class);
     });
 
     // Byproducts (Farmer only)
-    Route::middleware('can:isFarmer,App\Models\User')->group(function () {
+    Route::middleware('farmer')->group(function () {
         Route::resource('byproducts', ByproductController::class);
     });
 

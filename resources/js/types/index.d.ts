@@ -30,6 +30,9 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    user_type: 'farmer' | 'buyer';
+    phone?: string;
+    address?: string;
     avatar?: string;
     email_verified_at: string | null;
     created_at: string;

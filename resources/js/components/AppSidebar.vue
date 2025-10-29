@@ -2,6 +2,8 @@
 import NavFooter from '@/components/NavFooter.vue';
 import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
+import ThemeSwitcher from '@/components/ThemeSwitcher.vue';
+import LanguageSwitcher from '@/components/LanguageSwitcher.vue';
 import {
     Sidebar,
     SidebarContent,
@@ -13,30 +15,69 @@ import {
 } from '@/components/ui/sidebar';
 import { dashboard } from '@/routes';
 import { type NavItem } from '@/types';
-import { Link } from '@inertiajs/vue3';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-vue-next';
+import { Link, usePage } from '@inertiajs/vue3';
+import { LayoutGrid, Sprout, ShoppingCart, Package, Leaf, Gavel, ShoppingBasket } from 'lucide-vue-next';
+import { computed } from 'vue';
 import AppLogo from './AppLogo.vue';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
-];
+const page = usePage();
+const user = computed(() => page.props.auth?.user);
+const isFarmer = computed(() => user.value?.user_type === 'farmer');
+const isBuyer = computed(() => user.value?.user_type === 'buyer');
 
-const footerNavItems: NavItem[] = [
-    {
-        title: 'Github Repo',
-        href: 'https://github.com/laravel/vue-starter-kit',
-        icon: Folder,
-    },
-    {
-        title: 'Documentation',
-        href: 'https://laravel.com/docs/starter-kits#vue',
-        icon: BookOpen,
-    },
-];
+const mainNavItems = computed<NavItem[]>(() => {
+    const items: NavItem[] = [
+        {
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+    ];
+    
+    if (isFarmer.value) {
+        items.push(
+            {
+                title: 'My Plots',
+                href: '/plots',
+                icon: Sprout,
+            },
+            {
+                title: 'Harvests',
+                href: '/harvests',
+                icon: Leaf,
+            },
+            {
+                title: 'Products',
+                href: '/products',
+                icon: ShoppingBasket,
+            },
+            {
+                title: 'Byproducts',
+                href: '/byproducts',
+                icon: Package,
+            }
+        );
+    }
+    
+    if (isBuyer.value) {
+        items.push(
+            {
+                title: 'Marketplace',
+                href: '/harvests',
+                icon: ShoppingCart,
+            },
+            {
+                title: 'My Bids',
+                href: '/harvest-bids',
+                icon: Gavel,
+            }
+        );
+    }
+    
+    return items;
+});
+
+const footerNavItems: NavItem[] = [];
 </script>
 
 <template>
@@ -58,7 +99,10 @@ const footerNavItems: NavItem[] = [
         </SidebarContent>
 
         <SidebarFooter>
-            <NavFooter :items="footerNavItems" />
+            <div class="flex items-center gap-2 px-2 py-2">
+                <ThemeSwitcher />
+                <LanguageSwitcher />
+            </div>
             <NavUser />
         </SidebarFooter>
     </Sidebar>

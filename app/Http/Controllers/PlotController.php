@@ -108,9 +108,38 @@ class PlotController extends Controller
             'is_harvest_sold' => 'boolean',
             'can_deliver' => 'boolean',
             'available_categories' => 'nullable|array',
+            'images' => 'nullable|array|max:10',
+            'images.*' => 'image|max:2048',
+            'delete_images' => 'nullable|array',
+            'delete_images.*' => 'integer',
         ]);
 
         $plot->update($validated);
+
+        // Handle image deletions
+        if ($request->has('delete_images')) {
+            $imagesToDelete = PlotImage::whereIn('id', $request->delete_images)
+                ->where('plot_id', $plot->id)
+                ->get();
+
+            foreach ($imagesToDelete as $image) {
+                Storage::disk('public')->delete($image->image_path);
+                $image->delete();
+            }
+        }
+
+        // Handle new image uploads
+        if ($request->hasFile('images')) {
+            $maxOrder = $plot->images()->max('order') ?? -1;
+            foreach ($request->file('images') as $index => $image) {
+                $path = $image->store('plot-images', 'public');
+                PlotImage::create([
+                    'plot_id' => $plot->id,
+                    'image_path' => $path,
+                    'order' => $maxOrder + $index + 1,
+                ]);
+            }
+        }
 
         return redirect()->route('plots.show', $plot)->with('success', 'Plot updated successfully');
     }

@@ -32,7 +32,7 @@ class HarvestController extends Controller
 
     public function create()
     {
-        $plots = Auth::user()->plots()->get();
+        $plots = Auth::user()->farmerProfile->plots ?? collect();
         $timeWindows = BidTimeWindow::all();
         $categories = HarvestCategory::all();
 
@@ -67,9 +67,12 @@ class HarvestController extends Controller
     {
         $harvest->load(['plot', 'farmer.farmerProfile', 'bids.buyer', 'bidTimeWindow']);
 
+        $user = Auth::user();
+        $canBid = $user->user_type === 'buyer' && $harvest->isActive();
+
         return Inertia::render('Harvests/Show', [
             'harvest' => $harvest,
-            'canBid' => Auth::user()->isBuyer() && $harvest->isActive(),
+            'canBid' => $canBid,
             'categories' => HarvestCategory::all(),
         ]);
     }
